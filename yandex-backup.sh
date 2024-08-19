@@ -74,7 +74,7 @@ function backups_list() {
 }
 
 function backups_count() {
-    backups_list | wc -l
+    echo $(( `backups_list | wc -l` / 2 ))
 }
 
 function remove_old_backups() {
@@ -82,7 +82,7 @@ function remove_old_backups() {
     old_bkps=$((bkps - MAX_BACKUPS))
     if [ "$old_bkps" -gt "0" ];then
         logger "Delete old backups from Yandex Disk"
-        for i in `eval echo {1..$((old_bkps * 2))}`; do
+        for i in $(seq 1 $old_bkps); do
             curl -X DELETE -s -H "Authorization: OAuth $TOKEN" "https://cloud-api.yandex.net:443/v1/disk/resources?path=app:/$(backups_list | awk '(NR == 1)')&permanently=true"
         done
     fi
@@ -133,4 +133,4 @@ if [ $MAX_BACKUPS -gt 0 ]; then remove_old_backups; fi
 
 logger "Finalizing..."
 rm -rf "$BACKUP_DIR/$DATE"
-rm "$BACKUP_DIR/*.gz"
+rm $BACKUP_DIR/*.gz
