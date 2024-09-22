@@ -96,6 +96,7 @@ read -r -a REPOSITORIES <<< "aliasme\
     backup-tool\
     blog-notifier\
     budget-app\
+    cashback-app\
     crypto-watch\
     daily-dashboard\
     deposit-watcher\
